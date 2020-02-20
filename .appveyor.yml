@@ -25,12 +25,12 @@ artifacts:
   - path: 'wxwidgets*.tar.xz'
     name: wxWidget
 
-# deploy:
-#  release: $(APPVEYOR_REPO_TAG_NAME)
-#  description: wxWidget $(APPVEYOR_REPO_TAG_NAME)
-#  provider: GitHub
-#  artifact: /wxwidgets.*\.tar\.xz/
-#  auth_token:
-#    secure: H8HAtJ5SrLHk1gW1eYZFcjtekn1rIW7a8GJsNC6Nftcql8wE0seZRtYqMnFoQLnr
-#  draft: true
-#  prerelease: true
+deploy:
+  release: $(APPVEYOR_REPO_TAG_NAME)
+  description: wxWidget $(APPVEYOR_REPO_TAG_NAME)
+  provider: GitHub
+  artifact: /wxwidgets.*\.tar\.xz/
+  auth_token:
+    secure: H8HAtJ5SrLHk1gW1eYZFcjtekn1rIW7a8GJsNC6Nftcql8wE0seZRtYqMnFoQLnr
+  draft: true
+  prerelease: true
