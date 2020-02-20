@@ -30,5 +30,3 @@ pushd $PREFIX/bin
 rm wx-config
 ln -s ../lib/wx/config/$HOST-msw-unicode-3.0 wx-config
 popd
-
-find $PREFIX
