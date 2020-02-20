@@ -1,0 +1,25 @@
+From 01fb426d25652d90588fec461d7be704e3de6aeb Mon Sep 17 00:00:00 2001
+From: GH Cao <driver1998@foxmail.com>
+Date: Thu, 20 Feb 2020 19:04:53 +0800
+Subject: [PATCH 4/4] wx.rc: workaround menuitem action id overflow in llvm-rc
+
+---
+ include/wx/msw/wx.rc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/wx/msw/wx.rc b/include/wx/msw/wx.rc
+index 7d67c57..ef5f761 100644
+--- a/include/wx/msw/wx.rc
++++ b/include/wx/msw/wx.rc
+@@ -29,7 +29,7 @@ BEGIN
+         MENUITEM "&Cascade",                    4002
+         MENUITEM "Tile &Horizontally",          4001
+         MENUITEM "Tile &Vertically",            4005
+-	MENUITEM "", -1
++        MENUITEM "", 4006
+         MENUITEM "&Arrange Icons",              4003
+         MENUITEM "&Next",                       4004
+     END
+-- 
+2.17.1
+

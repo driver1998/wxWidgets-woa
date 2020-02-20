@@ -1,0 +1,27 @@
+From 555559d48ead14954b957bf5616e6a28eccfb17a Mon Sep 17 00:00:00 2001
+From: GH Cao <driver1998@foxmail.com>
+Date: Thu, 20 Feb 2020 17:13:14 +0800
+Subject: [PATCH 2/4] mediactrl: fix narrowing error with clang
+
+---
+ src/msw/mediactrl_am.cpp | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/src/msw/mediactrl_am.cpp b/src/msw/mediactrl_am.cpp
+index f5b9ed4..674da36 100644
+--- a/src/msw/mediactrl_am.cpp
++++ b/src/msw/mediactrl_am.cpp
+@@ -2179,7 +2179,9 @@ void wxAMMediaBackend::Move(int WXUNUSED(x), int WXUNUSED(y),
+ //---------------------------------------------------------------------------
+ void wxAMMediaEvtHandler::OnActiveX(wxActiveXEvent& event)
+ {
+-    switch(event.GetDispatchId())
++    // cast to unsigned long to fix narrowing error with case 0xfffffd9f
++    // when using clang
++    switch (static_cast<unsigned long>(event.GetDispatchId()))
+     {
+ #ifndef __WXWINCE__
+     case 0x00000001: // statechange in IActiveMovie
+-- 
+2.17.1
+

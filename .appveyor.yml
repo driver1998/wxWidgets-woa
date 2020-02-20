@@ -1,0 +1,36 @@
+image: Ubuntu1804
+
+skip_non_tags: true
+
+environment:
+  matrix:
+    - ARCH: aarch64
+    - ARCH: armv7
+    
+install:
+  sh: |-
+      curl  -o llvm-mingw.tar.xz    -L https://github.com/mstorsjo/llvm-mingw/releases/download/20191230/llvm-mingw-20191230-ubuntu-16.04.tar.xz
+      tar -xJf llvm-mingw.tar.xz    || exit 1
+      curl  -o wxwidgets.tar.bz2    -L https://github.com/wxWidgets/wxWidgets/releases/download/v3.0.4/wxWidgets-3.0.4.tar.bz2
+      tar -xjf wxwidgets.tar.bz2    || exit 1
+      chmod +x build.sh
+
+build_script: 
+  sh: build.sh
+
+after_build:
+  sh: tar cJf wxwidgets-$ARCH-$APPVEYOR_REPO_TAG_NAME.tar.xz $ARCH-w64-mingw32
+
+artifacts:
+  - path: 'wxwidgets*.tar.xz'
+    name: wxWidget
+
+# deploy:
+#  release: $(APPVEYOR_REPO_TAG_NAME)
+#  description: wxWidget $(APPVEYOR_REPO_TAG_NAME)
+#  provider: GitHub
+#  artifact: /wxwidgets.*\.tar\.xz/
+#  auth_token:
+#    secure: H8HAtJ5SrLHk1gW1eYZFcjtekn1rIW7a8GJsNC6Nftcql8wE0seZRtYqMnFoQLnr
+#  draft: true
+#  prerelease: true

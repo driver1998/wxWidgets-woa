@@ -1,0 +1,130 @@
+From 0dc11b38ec4f6ab53e2ad18bf89418194c641d3b Mon Sep 17 00:00:00 2001
+From: GH Cao <driver1998@foxmail.com>
+Date: Thu, 20 Feb 2020 17:09:50 +0800
+Subject: [PATCH 1/4] Add manifest for Windows ARM
+
+---
+ include/wx/msw/arm.manifest   | 23 +++++++++++++++++++++++
+ include/wx/msw/arm64.manifest | 23 +++++++++++++++++++++++
+ include/wx/msw/genrcdefs.h    |  6 +++++-
+ include/wx/msw/rcdefs.h       |  8 ++++++++
+ include/wx/msw/wx.rc          |  4 ++++
+ 5 files changed, 63 insertions(+), 1 deletion(-)
+ create mode 100644 include/wx/msw/arm.manifest
+ create mode 100644 include/wx/msw/arm64.manifest
+
+diff --git a/include/wx/msw/arm.manifest b/include/wx/msw/arm.manifest
+new file mode 100644
+index 0000000..0d14cae
+--- /dev/null
++++ b/include/wx/msw/arm.manifest
+@@ -0,0 +1,23 @@
++<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
++<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
++<assemblyIdentity
++    version="0.64.1.0"
++    processorArchitecture="arm"
++    name="Controls"
++    type="win32"
++/>
++<description>wxWindows application</description>
++<dependency>
++    <dependentAssembly>
++        <assemblyIdentity
++            type="win32"
++            name="Microsoft.Windows.Common-Controls"
++            version="6.0.0.0"
++            processorArchitecture="arm"
++            publicKeyToken="6595b64144ccf1df"
++            language="*"
++        />
++    </dependentAssembly>
++</dependency>
++</assembly>
++
+diff --git a/include/wx/msw/arm64.manifest b/include/wx/msw/arm64.manifest
+new file mode 100644
+index 0000000..fc8e74a
+--- /dev/null
++++ b/include/wx/msw/arm64.manifest
+@@ -0,0 +1,23 @@
++<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
++<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
++<assemblyIdentity
++    version="0.64.1.0"
++    processorArchitecture="arm64"
++    name="Controls"
++    type="win32"
++/>
++<description>wxWindows application</description>
++<dependency>
++    <dependentAssembly>
++        <assemblyIdentity
++            type="win32"
++            name="Microsoft.Windows.Common-Controls"
++            version="6.0.0.0"
++            processorArchitecture="arm64"
++            publicKeyToken="6595b64144ccf1df"
++            language="*"
++        />
++    </dependentAssembly>
++</dependency>
++</assembly>
++
+diff --git a/include/wx/msw/genrcdefs.h b/include/wx/msw/genrcdefs.h
+index 809419b..50ce8d7 100644
+--- a/include/wx/msw/genrcdefs.h
++++ b/include/wx/msw/genrcdefs.h
+@@ -23,10 +23,14 @@ EMIT(#define wxUSE_RC_MANIFEST 1)
+ EMIT(#define WX_CPU_AMD64)
+ #endif
+ 
+-#ifdef _M_ARM
++#if defined _M_ARM || defined __arm__
+ EMIT(#define WX_CPU_ARM)
+ #endif
+ 
++#if defined _M_ARM64 || defined __aarch64__
++EMIT(#define WX_CPU_ARM64)
++#endif
++
+ #if defined _M_IA64 || defined __ia64__
+ EMIT(#define WX_CPU_IA64)
+ #endif
+diff --git a/include/wx/msw/rcdefs.h b/include/wx/msw/rcdefs.h
+index 8b9ac71..ead5ec2 100644
+--- a/include/wx/msw/rcdefs.h
++++ b/include/wx/msw/rcdefs.h
+@@ -31,6 +31,14 @@
+         #ifndef WX_CPU_IA64
+             #define WX_CPU_IA64
+         #endif
++    #elif defined __arm__
++        #ifndef WX_CPU_ARM
++            #define WX_CPU_ARM
++        #endif
++    #elif defined __aarch64__
++        #ifndef WX_CPU_ARM64
++            #define WX_CPU_ARM64
++        #endif
+     #endif
+ #endif
+ 
+diff --git a/include/wx/msw/wx.rc b/include/wx/msw/wx.rc
+index 702861a..7d67c57 100644
+--- a/include/wx/msw/wx.rc
++++ b/include/wx/msw/wx.rc
+@@ -111,6 +111,10 @@ wxMANIFEST_ID 24 "wx/msw/amd64.manifest"
+ wxMANIFEST_ID 24 "wx/msw/ia64.manifest"
+ #elif defined(WX_CPU_X86)
+ wxMANIFEST_ID 24 "wx/msw/wx.manifest"
++#elif defined(WX_CPU_ARM)
++wxMANIFEST_ID 24 "wx/msw/arm.manifest"
++#elif defined(WX_CPU_ARM64)
++wxMANIFEST_ID 24 "wx/msw/arm64.manifest"
+ #else
+ // Notice that if the manifest is included, WX_CPU_XXX constant corresponding
+ // to the architecture we're compiling for must be defined. This can be done
+-- 
+2.17.1
+
