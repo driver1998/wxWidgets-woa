@@ -16,7 +16,7 @@ install:
       chmod +x build.sh
 
 build_script: 
-  sh: build.sh
+  sh: ./build.sh
 
 after_build:
   sh: tar cJf wxwidgets-$ARCH-$APPVEYOR_REPO_TAG_NAME.tar.xz $ARCH-w64-mingw32
